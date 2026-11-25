@@ -1,0 +1,25 @@
+# Локальная демоверсия: один контейнер, один порт, доступ только с этого компьютера.
+#   docker compose up -d --build      → http://127.0.0.1:8205
+#   docker compose exec app python -m app.seed [--reset]
+services:
+  app:
+    build: .
+    image: team-assembly-board:local
+    ports:
+      - "127.0.0.1:${APP_PORT:-8205}:8000"
+    environment:
+      DEMO_MODE: ${DEMO_MODE:-1}
+      SEED_DEMO: ${SEED_DEMO:-1}
+      COOKIE_SECURE: ${COOKIE_SECURE:-0}
+    volumes:
+      - board-data:/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import json,urllib.request,sys; r=json.load(urllib.request.urlopen('http://127.0.0.1:8000/api/health', timeout=2)); sys.exit(0 if r['status']=='ok' else 1)"]
+      interval: 10s
+      timeout: 3s
+      start_period: 10s
+      retries: 5
+
+volumes:
+  board-data:

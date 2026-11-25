@@ -1,0 +1,24 @@
+# Зависимости и сборка
+node_modules/
+frontend/dist/
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Локальная база и результаты тестов
+data/
+backend/data/
+*.sqlite3
+*.sqlite3-*
+test-results/
+playwright-report/
+
+# Окружение и служебные файлы
+.env
+*.log
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.tsbuildinfo
